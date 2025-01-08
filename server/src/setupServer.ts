@@ -70,38 +70,12 @@ export class ServerX {
   }
   private routesMiddleware(app: Application): void {
     MainRoute(app);
-
-    // app.all('*',(req:Request,res:Response)=>{HttpRes.NOT_FOUND(res,`${HSC.NOT_FOUND} url:${req.url} ${HSC.getStatusText(HSC.NOT_FOUND)}`)});
-
-    //   app.use("/", (req:Request, res:Response) => {
-    //   //  console.log(req.baseUrl)
-    //   //  console.log(req.headers)
-
-    //   HttpRes.OK(res, `Home   :${req.originalUrl}, ${req}`,{request:req.headers});
-    //   // res.status(200).json({message: `Home:${req.originalUrl} ,${req.headers}`})
-    // });
-    // app.use("/qwerty", async(req:Request, res:Response) => {
-    //   console.log(req.url)
-    //   HttpRes.OK(res, `QWERTY:${req.url},${req}`);
-    // });
-
-    // app.use("/test", async (req: Request, res: Response):Promise<void> => {
-    //   console.log(req)
-    //   HttpRes.CREATED(res, { message: "hello", OS: req });
-    // });
-    // app.use("/test1", async(req: Request, res: Response):Promise<void> => {
-    //   // HttpRes.OK(res,"created",{IP:req.ip,URL:req.baseUrl,url2:req.url,url3:req.originalUrl})
-    //   // HttpRes.CREATED(res,{info:req.headers,USER_AGENT:req.headers['user-agent'],COOKIES:req.headers['cookie'] ? req.headers['cookie'] : "No Cookies" ,COOKIE_SESSION:req.headers['cookie-session']})
-    //   // HttpRes.ACCEPTED(res)
-    //   HttpRes.CREATED(res, { sss: "ss", request: req.headers }, "HELLO");
-    // });
   }
   private apiMonitoring(app: Application): void {}
   private globalErrorHandler(app: Application) {
     app.all('*', (req: Request, res: Response) => {
       HttpRes.NOT_FOUND(res, `${HSC.NOT_FOUND} url:${req.url} ${HSC.getStatusText(HSC.NOT_FOUND)}`);
       // throw new NotFoundError(`${HSC.NOT_FOUND} url:${req.url} ${HSC.getStatusText(HSC.NOT_FOUND)}`);
-
     });
 
     app.use((err: Error | TErrorRes, req: Request, res: Response, next: NextFunction) => {
@@ -112,7 +86,6 @@ export class ServerX {
         HttpRes.RES_WITH_DATA(res, err.statusCode, err.serializeErrors());
       } else if (err instanceof Error || typeof Error) {
         log.error(err);
-
         HttpRes.RES_WITH_DATA(res, 500, { statusCode: 500, status: 'fail', message: 'Server Error', error: err });
       } else {
         next();
